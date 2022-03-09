@@ -60,6 +60,8 @@ inline float Linear_to_sRGB(float v)
 		return 1.055f * powf(v, 0.41666f) - 0.055f;
 }
 
+uint8_t Linear_to_sRGB_pix(float v);
+
 inline float3 sRGB_to_Linear(float3 v)
 {
 	return {sRGB_to_Linear(v.x), sRGB_to_Linear(v.y), sRGB_to_Linear(v.z)};
@@ -68,6 +70,11 @@ inline float3 sRGB_to_Linear(float3 v)
 inline float3 Linear_to_sRGB(float3 v)
 {
 	return { Linear_to_sRGB(v.x), Linear_to_sRGB(v.y), Linear_to_sRGB(v.z) };
+}
+
+inline pix3 Linear_to_sRGB_pix(float3 v)
+{
+	return { Linear_to_sRGB_pix(v.x), Linear_to_sRGB_pix(v.y), Linear_to_sRGB_pix(v.z) };
 }
 
 inline float3 pix_to_float(pix3 v)

@@ -49,8 +49,7 @@ pix3 Gradient::Evaluate_Linear(float t) const
 
 	// [precalc to-Linear] -> lerp -> to-sRGB
 	float3 c = lerp(m_KeysLinear[idx], m_KeysLinear[idx + 1], a);
-	c = Linear_to_sRGB(c);
-	return float_to_pix(c);
+	return Linear_to_sRGB_pix(c);
 }
 
 pix3 Gradient::Evaluate_OkLab(float t) const
@@ -69,6 +68,5 @@ pix3 Gradient::Evaluate_OkLab(float t) const
 	// [precalc to-Linear -> to-Oklab] -> lerp -> to-Linear -> to-sRGB
 	float3 c = lerp(m_KeysOkLab[idx], m_KeysOkLab[idx + 1], a);
 	c = OkLab_to_Linear_sRGB_Ref(c);
-	c = Linear_to_sRGB(c);
-	return float_to_pix(c);
+	return Linear_to_sRGB_pix(c);
 }

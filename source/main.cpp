@@ -27,7 +27,7 @@ static void MeasureTime(int seed, const char *name, eval_func func, const int ex
 	int sum[3] = {};
 	auto t0 = std::chrono::steady_clock::now();
 	const int kIterations = 10000000;
-	int allowedDiff = (int)(0.00004f * kIterations);
+	int allowedDiff = (int)(0.0008f * kIterations);
 	for (int i = 0; i < kIterations; ++i)
 	{
 		float a = RandomFloat01(state);

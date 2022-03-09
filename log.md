@@ -30,3 +30,11 @@ Profiling Windows VS build:
 Profiling Windows VS build:
 * Linear spends 152ms inside `powf()`,
 * OkLab spends 180ms inside `powf()`.
+
+----
+**Table based Linear->sRGB**
+
+| Platform | sRGB | Linear | OkLab |
+| --- | ---: | ---: | ---: |
+| Windows, vs2022 | 126.9 | 148.9 | 173.4 |
+| Linux, clang 10 | 106.7 | 129.7 | 164.6 |
