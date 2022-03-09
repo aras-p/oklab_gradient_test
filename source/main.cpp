@@ -1,4 +1,3 @@
-#include "oklab.h"
 #include "gradient.h"
 #include <chrono>
 #include <stdio.h>
@@ -67,6 +66,11 @@ static pix3 Eval_Linear(float a)
 	return s_Gradient.Evaluate_Linear(a);
 }
 
+static pix3 Eval_OkLab(float a)
+{
+	return s_Gradient.Evaluate_OkLab(a);
+}
+
 int main(int argc, const char**)
 {
 	// "VIBGYOR" rainbow gradient
@@ -90,7 +94,9 @@ int main(int argc, const char**)
 	int seed = argc + 1;
 	int exp_sRGB[3] = { 1306914865, 1076623000, 816166200 };
 	int exp_Linear[3] = { 1416453422, 1209420259, 917944709 };
+	int exp_OkLab[3] = { 1396681593, 1183052365, 898569604 };
 	MeasureTime(seed, "sRGB", Eval_sRGB, exp_sRGB);
 	MeasureTime(seed, "Linear", Eval_Linear, exp_Linear);
+	MeasureTime(seed, "OkLab", Eval_OkLab, exp_OkLab);
 	return 0;
 }

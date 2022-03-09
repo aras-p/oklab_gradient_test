@@ -13,4 +13,5 @@ struct Gradient
 	void Precalc();
 	pix3 Evaluate_sRGB(float t) const;
 	pix3 Evaluate_Linear(float t) const;
+	pix3 Evaluate_OkLab(float t) const;
 };
