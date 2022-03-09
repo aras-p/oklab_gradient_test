@@ -25,6 +25,7 @@ Profiling Windows VS build:
 | --- | ---: | ---: | ---: |
 | Windows, vs2022 | 124.9 | 271.1 | 321.8 |
 | Linux, clang 10 | 107.0 | 196.0 | 277.7 |
+| Mac, clang 13 | 139.8 | 224.4 | 286.8 |
 
 Profiling Windows VS build:
 * Linear spends 152ms inside `powf()`,
