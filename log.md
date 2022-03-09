@@ -48,3 +48,4 @@ Profiling Windows VS build:
 | Windows, clang 13 | 111.1 | 158.7 | 184.9 | 166.4 |
 | Linux, clang 10 | 108.4 | 133.0 | 164.1 | 151.3 |
 | Linux, gcc 9.3 | 106.8 | 138.2 | 297.6 | 279.5 |
+| Mac, clang 13 | 143.7 | 162.0 | 181.5 | 182.5 |
