@@ -8,3 +8,5 @@ OkLab: 2425.5ms
 
 Ubuntu 20.04, gcc 9.3:    sRGB 123.1, Linear 433.6, OkLab 1567.2
 Ubuntu 20.04, clang 10.0: sRGB 106.6, Linear 411.4, OkLab 1099.4
+
+MBP M1Max, macOS 12.1, clang 13.0: sRGB 146.2, Linear 408.5, OkLab 966.9
