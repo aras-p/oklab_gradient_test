@@ -1,14 +1,19 @@
-﻿sRGB: 125.2ms
-Linear: 619.2ms
-	powf 481ms
-OkLab: 2425.5ms
-	cbrtf 1649ms (in Oklab)
-	powf 515ms (from Linear<->sRGB conversions)
+----
+**Initial**
 
+| Platform | sRGB | Linear | OkLab |
+| --- | ---: | ---: | ---: |
+| Windows, vs2022 | 125.2 | 619.2 | 2424.5 |
+| Windows, clang 13 | 115.7 | 601.3 | 2405.5 |
+| Linux, gcc 9.3 | 123.1 | 433.6 | 1567.2 |
+| Linux, clang 10 | 106.6 | 411.4 | 1099.4 |
+| Mac, clang 13 | 146.2 | 408.5 | 966.9 |
 
-Ubuntu 20.04, gcc 9.3:    sRGB 123.1, Linear 433.6, OkLab 1567.2
-Ubuntu 20.04, clang 10.0: sRGB 106.6, Linear 411.4, OkLab 1099.4
+* Windows: Windows 10 21H2, AMD Ryzen 5950X.
+* Linux: same as above, ran through WSL2 w/ Ubuntu 20.
+* Mac: macOS 12.1, MBP M1 Max 16".
+* Compiler options: `-O2` for gcc/clang, `Release` for VS, everything else left at defaults. 
 
-MBP M1Max, macOS 12.1, clang 13.0: sRGB 146.2, Linear 408.5, OkLab 966.9
-
-Win Clang 13.0.1: sRGB 115.7, Linear 601.3, OkLab 2405.5
+Profiling Windows VS build:
+* Linear spends 481ms inside `powf()`,
+* OkLab spends 1649ms inside `cbrtf()`, and 515ms inside `powf()`.
