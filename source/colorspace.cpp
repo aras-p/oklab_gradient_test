@@ -34,3 +34,30 @@ float3 OkLab_to_Linear_sRGB(float3 c)
         -0.0041960863f * l - 0.7034186147f * m + 1.7076147010f * s,
     };
 }
+
+float3 Linear_sRGB_to_LMS(float3 c)
+{
+    float l = 0.4122214708f * c.x + 0.5363325363f * c.y + 0.0514459929f * c.z;
+    float m = 0.2119034982f * c.x + 0.6806995451f * c.y + 0.1073969566f * c.z;
+    float s = 0.0883024619f * c.x + 0.2817188376f * c.y + 0.6299787005f * c.z;
+
+    float l_ = cbrtf(l);
+    float m_ = cbrtf(m);
+    float s_ = cbrtf(s);
+    return {l_, m_, s_};
+}
+
+float3 LMS_to_Linear_sRGB(float3 c)
+{
+    float l = c.x;
+    float m = c.y;
+    float s = c.z;
+    l = l * l * l;
+    m = m * m * m;
+    s = s * s * s;
+    return {
+        +4.0767416621f * l - 3.3077115913f * m + 0.2309699292f * s,
+        -1.2684380046f * l + 2.6097574011f * m - 0.3413193965f * s,
+        -0.0041960863f * l - 0.7034186147f * m + 1.7076147010f * s,
+    };
+}

@@ -12,8 +12,8 @@ void Gradient::Precalc()
 		float3 c = pix_to_float(m_Keys[i]);
 		c = sRGB_to_Linear(c);
 		m_KeysLinear[i] = c;
-		c = Linear_sRGB_to_OkLab(c);
-		m_KeysOkLab[i] = c;
+		m_KeysOkLab[i] = Linear_sRGB_to_OkLab(c);
+		m_KeysLMS[i] = Linear_sRGB_to_LMS(c);
 	}
 }
 
@@ -68,5 +68,24 @@ pix3 Gradient::Evaluate_OkLab(float t) const
 	// [precalc to-Linear -> to-Oklab] -> lerp -> to-Linear -> to-sRGB
 	float3 c = lerp(m_KeysOkLab[idx], m_KeysOkLab[idx + 1], a);
 	c = OkLab_to_Linear_sRGB(c);
+	return Linear_to_sRGB_pix(c);
+}
+
+pix3 Gradient::Evaluate_LMS(float t) const
+{
+	// find the keys to interpolate between
+	int idx = 0;
+	while (idx < m_KeyCount - 1 && t >= m_Times[idx + 1])
+		++idx;
+	// we are past the last key; just return that
+	if (idx >= m_KeyCount - 1)
+		return m_Keys[m_KeyCount - 1];
+
+	// interpolate between the keys
+	float a = (t - m_Times[idx]) * m_InvTimeDeltas[idx];
+
+	// [precalc to-Linear -> to-LMS] -> lerp -> to-Linear -> to-sRGB
+	float3 c = lerp(m_KeysLMS[idx], m_KeysLMS[idx + 1], a);
+	c = LMS_to_Linear_sRGB(c);
 	return Linear_to_sRGB_pix(c);
 }

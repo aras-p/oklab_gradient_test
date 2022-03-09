@@ -52,20 +52,10 @@ static void MeasureTime(int seed, const char *name, eval_func func, const int ex
 	}
 }
 
-static pix3 Eval_sRGB(float a)
-{
-	return s_Gradient.Evaluate_sRGB(a);
-}
-
-static pix3 Eval_Linear(float a)
-{
-	return s_Gradient.Evaluate_Linear(a);
-}
-
-static pix3 Eval_OkLab(float a)
-{
-	return s_Gradient.Evaluate_OkLab(a);
-}
+static pix3 Eval_sRGB(float a) { return s_Gradient.Evaluate_sRGB(a); }
+static pix3 Eval_Linear(float a) { return s_Gradient.Evaluate_Linear(a); }
+static pix3 Eval_OkLab(float a) { return s_Gradient.Evaluate_OkLab(a); }
+static pix3 Eval_LMS(float a) { return s_Gradient.Evaluate_LMS(a); }
 
 int main(int argc, const char**)
 {
@@ -94,5 +84,6 @@ int main(int argc, const char**)
 	MeasureTime(seed, "sRGB", Eval_sRGB, exp_sRGB);
 	MeasureTime(seed, "Linear", Eval_Linear, exp_Linear);
 	MeasureTime(seed, "OkLab", Eval_OkLab, exp_OkLab);
+	MeasureTime(seed, "LMS", Eval_LMS, exp_OkLab);
 	return 0;
 }
