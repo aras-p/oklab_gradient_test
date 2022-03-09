@@ -26,8 +26,9 @@ static void MeasureTime(int seed, const char *name, eval_func func, const int ex
 	uint32_t state = seed;
 	int sum[3] = {};
 	auto t0 = std::chrono::steady_clock::now();
-	int allowedDiff = 2;
-	for (int i = 0; i < 10000000; ++i)
+	const int kIterations = 10000000;
+	int allowedDiff = (int)(0.00004f * kIterations);
+	for (int i = 0; i < kIterations; ++i)
 	{
 		float a = RandomFloat01(state);
 		pix3 c = func(a);
@@ -39,19 +40,14 @@ static void MeasureTime(int seed, const char *name, eval_func func, const int ex
 	auto t1 = std::chrono::steady_clock::now();
 	std::chrono::duration<double, std::milli> ms = t1 - t0;
 	printf("%-15s %.1fms, sum %i, %i, %i\n", name, ms.count(), sum[0], sum[1], sum[2]);
-	if (abs(expSum[0] - sum[0]) > allowedDiff)
+	int diffR = abs(expSum[0] - sum[0]);
+	int diffG = abs(expSum[1] - sum[1]);
+	int diffB = abs(expSum[2] - sum[2]);
+	if (diffR > allowedDiff || diffG > allowedDiff || diffB > allowedDiff)
 	{
-		printf("  FAILED: expected R sum to be %i, got %i\n", expSum[0], sum[0]);
-		exit(1);
-	}
-	if (abs(expSum[1] - sum[1]) > allowedDiff)
-	{
-		printf("  FAILED: expected G sum to be %i, got %i\n", expSum[1], sum[1]);
-		exit(1);
-	}
-	if (abs(expSum[2] - sum[2]) > allowedDiff)
-	{
-		printf("  FAILED: expected B sum to be %i, got %i\n", expSum[2], sum[2]);
+		printf("  FAILED: expected sum differs more than allowed!\n");
+		printf("    expected %i, %i, %i\n", expSum[0], expSum[1], expSum[2]);
+		printf("    diff %i, %i, %i (allowed %i)\n", diffR, diffG, diffB, allowedDiff);
 		exit(1);
 	}
 }
