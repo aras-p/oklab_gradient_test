@@ -1,7 +1,7 @@
-#include "oklab.h"
+#include "colorspace.h"
 #include <math.h>
 
-float3 Linear_sRGB_to_OkLab_Ref(float3 c)
+float3 Linear_sRGB_to_OkLab(float3 c)
 {
     float l = 0.4122214708f * c.x + 0.5363325363f * c.y + 0.0514459929f * c.z;
     float m = 0.2119034982f * c.x + 0.6806995451f * c.y + 0.1073969566f * c.z;
@@ -18,7 +18,7 @@ float3 Linear_sRGB_to_OkLab_Ref(float3 c)
     };
 }
 
-float3 OkLab_to_Linear_sRGB_Ref(float3 c)
+float3 OkLab_to_Linear_sRGB(float3 c)
 {
     float l_ = c.x + 0.3963377774f * c.y + 0.2158037573f * c.z;
     float m_ = c.x - 0.1055613458f * c.y - 0.0638541728f * c.z;

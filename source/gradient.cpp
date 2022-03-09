@@ -1,5 +1,5 @@
 #include "gradient.h"
-#include "oklab.h"
+#include "colorspace.h"
 
 void Gradient::Precalc()
 {
@@ -12,7 +12,7 @@ void Gradient::Precalc()
 		float3 c = pix_to_float(m_Keys[i]);
 		c = sRGB_to_Linear(c);
 		m_KeysLinear[i] = c;
-		c = Linear_sRGB_to_OkLab_Ref(c);
+		c = Linear_sRGB_to_OkLab(c);
 		m_KeysOkLab[i] = c;
 	}
 }
@@ -67,6 +67,6 @@ pix3 Gradient::Evaluate_OkLab(float t) const
 
 	// [precalc to-Linear -> to-Oklab] -> lerp -> to-Linear -> to-sRGB
 	float3 c = lerp(m_KeysOkLab[idx], m_KeysOkLab[idx + 1], a);
-	c = OkLab_to_Linear_sRGB_Ref(c);
+	c = OkLab_to_Linear_sRGB(c);
 	return Linear_to_sRGB_pix(c);
 }
