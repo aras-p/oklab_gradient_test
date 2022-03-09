@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <math.h>
 
 struct pix3
 {	
@@ -41,4 +42,48 @@ inline pix3 lerp(pix3 a, pix3 b, float t)
 	c.g = a.g + ((scale * (b.g - a.g) + 128) >> 8);
 	c.b = a.b + ((scale * (b.b - a.b) + 128) >> 8);
 	return c;
+}
+
+inline float sRGB_to_Linear(float v)
+{
+	if (v < 0.04045f)
+		return v / 12.92f;
+	else
+		return powf((v + 0.055f) / 1.055f, 2.4f);
+}
+
+inline float Linear_to_sRGB(float v)
+{
+	if (v < 0.0031308f)
+		return 12.92f * v;
+	else
+		return 1.055f * powf(v, 0.41666f) - 0.055f;
+}
+
+inline float3 sRGB_to_Linear(float3 v)
+{
+	return {sRGB_to_Linear(v.x), sRGB_to_Linear(v.y), sRGB_to_Linear(v.z)};
+}
+
+inline float3 Linear_to_sRGB(float3 v)
+{
+	return { Linear_to_sRGB(v.x), Linear_to_sRGB(v.y), Linear_to_sRGB(v.z) };
+}
+
+inline float3 pix_to_float(pix3 v)
+{
+	constexpr float sc = 1.0f / 255.0f;
+	return {v.r * sc, v.g * sc, v.b * sc};
+}
+
+inline pix3 float_to_pix(float3 v)
+{
+	v.x = saturate(v.x);
+	v.y = saturate(v.y);
+	v.z = saturate(v.z);
+	return {
+		(uint8_t)(v.x * 255.0f + 0.5f),
+		(uint8_t)(v.y * 255.0f + 0.5f),
+		(uint8_t)(v.z * 255.0f + 0.5f)
+	};
 }

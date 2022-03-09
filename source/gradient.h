@@ -11,5 +11,6 @@ struct Gradient
 	int m_KeyCount = 0;
 
 	void Precalc();
-	pix3 Evaluate(float t) const;
+	pix3 Evaluate_sRGB(float t) const;
+	pix3 Evaluate_Linear(float t) const;
 };

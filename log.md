@@ -1,1 +1,2 @@
-﻿Initial: RGB 123ms
+﻿sRGB: 125.2ms
+Linear: 619.2ms
