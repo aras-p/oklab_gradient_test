@@ -37,12 +37,14 @@ Profiling Windows VS build:
 | Platform | sRGB | Linear | OkLab |
 | --- | ---: | ---: | ---: |
 | Windows, vs2022 | 126.9 | 148.9 | 173.4 |
-| Linux, clang 10 | 106.7 | 129.7 | 164.6 |
+| Linux, clang 10 | 107.7 | 132.7 | 164.6 |
 
 ----
 **Save matrix mul (use just LMS)**
 
 | Platform | sRGB | Linear | OkLab | LMS |
 | --- | ---: | ---: | ---: | ---: |
-| Windows, vs2022 | 126.9 | 148.9 | 173.4 | 163.7 |
-| Linux, clang 10 | 106.7 | 129.7 | 164.6 | 152.4 |
+| Windows, vs2022 | 125.4 | 144.6 | 181.4 | 167.3 |
+| Windows, clang 13 | 111.1 | 158.7 | 184.9 | 166.4 |
+| Linux, clang 10 | 108.4 | 133.0 | 164.1 | 151.3 |
+| Linux, gcc 9.3 | 106.8 | 138.2 | 297.6 | 279.5 |

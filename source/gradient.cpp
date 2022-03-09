@@ -17,7 +17,8 @@ void Gradient::Precalc()
 	}
 }
 
-pix3 Gradient::Evaluate_sRGB(float t) const
+template<typename lerp_func>
+pix3 Gradient::EvaluateImpl(float t, lerp_func lrp, const float3* precalcKeys) const
 {
 	// find the keys to interpolate between
 	int idx = 0;
@@ -29,63 +30,35 @@ pix3 Gradient::Evaluate_sRGB(float t) const
 
 	// interpolate between the keys
 	float a = (t - m_Times[idx]) * m_InvTimeDeltas[idx];
-
-	pix3 c = lerp(m_Keys[idx], m_Keys[idx + 1], a);
-	return c;
+	return lrp(m_Keys, precalcKeys, idx, a);
 }
 
-pix3 Gradient::Evaluate_Linear(float t) const
+static pix3 Lerp_sRGB(const pix3* keys, const float3* precalcKeys, int idx, float a)
 {
-	// find the keys to interpolate between
-	int idx = 0;
-	while (idx < m_KeyCount - 1 && t >= m_Times[idx + 1])
-		++idx;
-	// we are past the last key; just return that
-	if (idx >= m_KeyCount - 1)
-		return m_Keys[m_KeyCount - 1];
+	return lerp(keys[idx], keys[idx + 1], a);
+}
 
-	// interpolate between the keys
-	float a = (t - m_Times[idx]) * m_InvTimeDeltas[idx];
-
-	// [precalc to-Linear] -> lerp -> to-sRGB
-	float3 c = lerp(m_KeysLinear[idx], m_KeysLinear[idx + 1], a);
+static pix3 Lerp_Linear(const pix3* keys, const float3* precalcKeys, int idx, float a)
+{
+	float3 c = lerp(precalcKeys[idx], precalcKeys[idx + 1], a);
 	return Linear_to_sRGB_pix(c);
 }
 
-pix3 Gradient::Evaluate_OkLab(float t) const
+static pix3 Lerp_OkLab(const pix3* keys, const float3* precalcKeys, int idx, float a)
 {
-	// find the keys to interpolate between
-	int idx = 0;
-	while (idx < m_KeyCount - 1 && t >= m_Times[idx + 1])
-		++idx;
-	// we are past the last key; just return that
-	if (idx >= m_KeyCount - 1)
-		return m_Keys[m_KeyCount - 1];
-
-	// interpolate between the keys
-	float a = (t - m_Times[idx]) * m_InvTimeDeltas[idx];
-
-	// [precalc to-Linear -> to-Oklab] -> lerp -> to-Linear -> to-sRGB
-	float3 c = lerp(m_KeysOkLab[idx], m_KeysOkLab[idx + 1], a);
+	float3 c = lerp(precalcKeys[idx], precalcKeys[idx + 1], a);
 	c = OkLab_to_Linear_sRGB(c);
 	return Linear_to_sRGB_pix(c);
 }
 
-pix3 Gradient::Evaluate_LMS(float t) const
+static pix3 Lerp_LMS(const pix3* keys, const float3* precalcKeys, int idx, float a)
 {
-	// find the keys to interpolate between
-	int idx = 0;
-	while (idx < m_KeyCount - 1 && t >= m_Times[idx + 1])
-		++idx;
-	// we are past the last key; just return that
-	if (idx >= m_KeyCount - 1)
-		return m_Keys[m_KeyCount - 1];
-
-	// interpolate between the keys
-	float a = (t - m_Times[idx]) * m_InvTimeDeltas[idx];
-
-	// [precalc to-Linear -> to-LMS] -> lerp -> to-Linear -> to-sRGB
-	float3 c = lerp(m_KeysLMS[idx], m_KeysLMS[idx + 1], a);
+	float3 c = lerp(precalcKeys[idx], precalcKeys[idx + 1], a);
 	c = LMS_to_Linear_sRGB(c);
 	return Linear_to_sRGB_pix(c);
 }
+
+pix3 Gradient::Evaluate_sRGB(float t) const { return EvaluateImpl(t, Lerp_sRGB, nullptr); }
+pix3 Gradient::Evaluate_Linear(float t) const { return EvaluateImpl(t, Lerp_Linear, m_KeysLinear); }
+pix3 Gradient::Evaluate_OkLab(float t) const { return EvaluateImpl(t, Lerp_OkLab, m_KeysOkLab); }
+pix3 Gradient::Evaluate_LMS(float t) const { return EvaluateImpl(t, Lerp_LMS, m_KeysLMS); }

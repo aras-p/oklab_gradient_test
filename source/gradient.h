@@ -18,4 +18,7 @@ struct Gradient
 	pix3 Evaluate_Linear(float t) const;
 	pix3 Evaluate_OkLab(float t) const;
 	pix3 Evaluate_LMS(float t) const;
+
+	template<typename lerp_func>
+	pix3 EvaluateImpl(float t, lerp_func lrp, const float3* precalcKeys) const;
 };
