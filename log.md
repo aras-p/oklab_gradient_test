@@ -17,3 +17,15 @@
 Profiling Windows VS build:
 * Linear spends 481ms inside `powf()`,
 * OkLab spends 1649ms inside `cbrtf()`, and 515ms inside `powf()`.
+
+----
+**Precalculate gradient keys as Linear/OkLab**
+
+| Platform | sRGB | Linear | OkLab |
+| --- | ---: | ---: | ---: |
+| Windows, vs2022 | 124.9 | 271.1 | 321.8 |
+| Linux, clang 10 | 107.0 | 196.0 | 277.7 |
+
+Profiling Windows VS build:
+* Linear spends 152ms inside `powf()`,
+* OkLab spends 180ms inside `powf()`.

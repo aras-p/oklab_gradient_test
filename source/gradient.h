@@ -6,6 +6,8 @@ struct Gradient
 {
 	static constexpr int kMaxKeys = 8;
 	pix3 m_Keys[kMaxKeys];
+	float3 m_KeysLinear[kMaxKeys];
+	float3 m_KeysOkLab[kMaxKeys];
 	float m_Times[kMaxKeys];
 	float m_InvTimeDeltas[kMaxKeys]; // 1/(t1-t0) between each key
 	int m_KeyCount = 0;
